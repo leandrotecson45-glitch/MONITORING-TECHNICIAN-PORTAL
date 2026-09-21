@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#1261a0">
+<link rel="manifest" href="manifest.json">
+<title>OW Monitoring Portal</title>
+<style>
+:root{--b:#1261a0;--d:#073b66;--g:#16834b;--o:#d97706;--r:#c62828;--gray:#64748b;--bd:#dbe4ec;--bg:#f4f8fb}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:var(--bg);color:#17212b;font-family:Arial,sans-serif}
+.header{position:sticky;top:0;z-index:10;background:linear-gradient(135deg,#083b66,#1475bd);color:white;padding:12px 14px;box-shadow:0 4px 15px #0002}.head{max-width:1100px;margin:auto;display:flex;align-items:center;gap:10px}.logo{width:44px;height:44px;border-radius:12px;background:#fff2;display:grid;place-items:center;font-size:23px}.title{min-width:0}.title h1{font-size:18px;margin:0;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.title p{font-size:10px;margin:3px 0 0;opacity:.85}.refresh{margin-left:auto;border:0;background:#fff2;color:white;border-radius:12px;width:42px;height:42px;font-size:22px}
+.main{max-width:1100px;margin:auto;padding:13px}.connection,.sumcard,.search input,.empty,.card{background:#fff;border:1px solid var(--bd)}.connection{border-radius:14px;padding:9px 11px;display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:11px;font-weight:800}.dot{width:10px;height:10px;border-radius:50%;background:#ef4444}.dot.on{background:#22c55e;box-shadow:0 0 0 4px #dcfce7}.connection span:nth-child(2){flex:1}.time{color:var(--gray);font-weight:500}
+.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}.sumcard{border-radius:14px;padding:10px}.sumlabel{font-size:9px;color:var(--gray);font-weight:900}.sumnum{font-size:24px;font-weight:950;margin-top:2px}
+.search{position:relative;margin-bottom:8px}.search input{width:100%;height:47px;border-radius:14px;padding:0 12px 0 40px;font-size:16px;outline:0}.search span{position:absolute;left:13px;top:13px;color:var(--gray)}
+.filters{display:flex;gap:7px;overflow-x:auto;margin-bottom:13px;padding-bottom:4px}.filter{white-space:nowrap;border:1px solid var(--bd);background:#fff;color:#475569;border-radius:999px;padding:9px 12px;font-size:10px;font-weight:900}.filter.active{background:var(--b);color:#fff;border-color:var(--b)}
+.section{display:flex;justify-content:space-between;margin:3px 2px 9px}.section h2{font-size:15px;margin:0}.count{font-size:10px;color:var(--gray)}
+.records{display:grid;grid-template-columns:1fr;gap:11px}.card{border-radius:18px;overflow:hidden;box-shadow:0 4px 16px #0f172a12}.cardhead{padding:13px;display:flex;justify-content:space-between;gap:8px}.ow{min-width:0}.owno{font-size:19px;font-weight:950;color:var(--d)}.name{font-size:13px;font-weight:700;color:#334155;margin-top:3px;word-break:break-word}.badge{border-radius:999px;padding:6px 9px;height:max-content;font-size:9px;font-weight:950;background:#f1f5f9}.zero{background:#eaf5ff;color:var(--b)}.one{background:#fff5df;color:var(--o)}.target{background:#eaf8f0;color:var(--g)}.check{background:#fff0f0;color:var(--r)}
+.panel{margin:0 11px;border:1px solid #dce8f2;border-radius:16px;overflow:hidden}.grid{display:grid;grid-template-columns:1fr 1.5fr}.current{background:linear-gradient(#f5fbff,#eaf6ff);padding:13px 11px 16px;border-right:1px solid #dce8f2}.targetbox{background:#fff;padding:13px 11px 16px}.label{font-size:9px;font-weight:950;color:#64748b}.currentval{font-size:33px;line-height:1;font-weight:950;color:var(--d);margin-top:7px;white-space:nowrap}.currentval small{font-size:14px}.targets{margin-top:7px}.strict{color:var(--g);font-size:18px;font-weight:950}.conditional{color:var(--o);font-size:14px;font-weight:950;margin-top:5px}.normal{color:var(--b);font-size:20px;font-weight:950}.danger{color:var(--r);font-size:14px;font-weight:950}
+.quick{display:flex;gap:7px;padding:10px 12px}.q{flex:1;min-width:0;background:#f8fafc;border:1px solid #e5ebf0;border-radius:10px;padding:7px}.ql{font-size:8px;color:var(--gray);font-weight:900}.qv{font-size:11px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.detailsbtn{width:calc(100% - 24px);margin:0 12px 12px;height:46px;border:0;border-radius:12px;background:linear-gradient(135deg,#1261a0,#1683c4);color:#fff;font-size:13px;font-weight:950}.details{display:none;background:#f8fbfd;border-top:1px solid var(--bd);padding:12px}.details.open{display:block}.detailgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.detail{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:8px}.dl{font-size:8px;color:var(--gray);font-weight:900}.dv{font-size:11px;font-weight:800;margin-top:3px;word-break:break-word}.historytitle{font-size:10px;font-weight:950;margin:13px 0 7px}.history{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.hi{display:flex;justify-content:space-between;background:#fff;border:1px solid #e2e8f0;border-radius:9px;padding:7px}.hc{font-size:9px;color:var(--gray);font-weight:900}.hv{font-size:11px;color:var(--d);font-weight:950}.remarks{margin-top:9px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:9px}.rt{font-size:8px;color:var(--gray);font-weight:950}.rv{font-size:11px;font-weight:700;margin-top:4px;line-height:1.4}.empty{text-align:center;border-radius:16px;padding:30px 15px;color:var(--gray)}.empty b{display:block;color:#334155;margin:7px}.loading{text-align:center;padding:35px;color:var(--gray)}
+@media(min-width:700px){.summary{grid-template-columns:repeat(4,1fr)}.records{grid-template-columns:repeat(2,1fr)}}@media(min-width:1000px){.records{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<header class="header"><div class="head"><div class="logo">💧</div><div class="title"><h1 id="company">OW MONITORING</h1><p>Water Level Monitoring Portal</p></div><button class="refresh" id="refresh">↻</button></div></header>
+<main class="main">
+<div class="connection"><i id="dot" class="dot"></i><span id="conn">Starting...</span><span id="time" class="time">--</span></div>
+<div class="summary">
+<div class="sumcard"><div class="sumlabel">TOTAL OW</div><div class="sumnum" id="total">0</div></div>
+<div class="sumcard"><div class="sumlabel">MONITORING</div><div class="sumnum" id="monitoring">0</div></div>
+<div class="sumcard"><div class="sumlabel">16–20 CM</div><div class="sumnum" id="targetCount">0</div></div>
+<div class="sumcard"><div class="sumlabel">COMPLETED</div><div class="sumnum" id="completed">0</div></div>
+</div>
+<div class="search"><span>🔎</span><input id="search" type="search" placeholder="Search OW number or name..."></div>
+<div class="filters">
+<button class="filter active" data-f="ALL">ALL</button><button class="filter" data-f="ZERO_STRICT">0 CM • STRICT</button><button class="filter" data-f="ONE_TO_FOUR_CONDITIONAL">1–4 CM • CONDITIONAL</button><button class="filter" data-f="TARGET_1620">16–20 CM</button><button class="filter" data-f="NO_READING">NO READING</button><button class="filter" data-f="CHECK">CHECK</button><button class="filter" data-f="IRRIGATION">IRRIGATION</button><button class="filter" data-f="COMPLETED">COMPLETED</button>
+</div>
+<div class="section"><h2>Monitoring Records</h2><span id="count" class="count">0 records</span></div>
+<div id="records" class="records"><div class="loading">Loading records...</div></div>
+</main>
+<script>
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbxa8TuEqwEtJr-iJAK7JKKK82PqA9Q_p7widqCSROj0AMicwydnrtCrEx3JPhfZKP9V/exec";
+const COMPANY_NAME="YOUR COMPANY NAME";
+const CACHE_KEY="OW_MONITORING_OFFLINE_V4";
+const REFRESH_MS=60000;
+let records=[],filter="ALL",search="";
+const $=id=>document.getElementById(id),clean=v=>v==null?"":String(v).trim();
+function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function completed(v){let t=clean(v).toUpperCase();return t.includes("COMPLIANT")&&!t.includes("NON-COMPLIANT")}
+function connection(on,msg){$("dot").classList.toggle("on",on);$("conn").textContent=msg}
+function history(r){let a=Array.isArray(r.Readings)?r.Readings:[];return a.length?a.map(x=>`<div class="hi"><span class="hc">${esc(x.column)}</span><span class="hv">${esc(x.value||"—")}</span></div>`).join(""):'<div class="hi"><span class="hc">—</span><span class="hv">No reading</span></div>'}
+function box(l,v){return `<div class="detail"><div class="dl">${esc(l)}</div><div class="dv">${esc(v||"—")}</div></div>`}
+function badge(c){return c==="ZERO_STRICT"?"zero":c==="ONE_TO_FOUR_CONDITIONAL"?"one":c==="TARGET_1620"?"target":c==="CHECK"?"check":""}
+function card(r){
+ let c=clean(r["Monitoring Category"]),cur=clean(r["Current Water Level"]),t=clean(r["Next Target"]),st=clean(r.Status),irr=clean(r["Irrigation Status"]),latest=clean(r["Latest Reading Column"]),id="d"+Math.random().toString(36).slice(2);
+ let target=c==="TARGET_1620"?'<div class="strict">0 CM — STRICT</div><div class="conditional">1–4 CM — CONDITIONAL</div>':(c==="ZERO_STRICT"||c==="ONE_TO_FOUR_CONDITIONAL")?'<div class="normal">16–20 CM</div>':c==="NO_READING"?'<div class="danger">WAITING FOR READING</div>':`<div class="danger">${esc(t||"CHECK READING")}</div>`;
+ return `<article class="card"><div class="cardhead"><div class="ow"><div class="owno">${esc(r.OW||"OW")}</div><div class="name">${esc(r.Name||"Unnamed")}</div></div><div class="badge ${badge(c)}">${esc(st||"NO STATUS")}</div></div>
+ <div class="panel"><div class="grid"><div class="current"><div class="label">CURRENT READ</div><div class="currentval">${cur?esc(cur):"—"}${cur&&!cur.toLowerCase().includes("cm")?"<small> CM</small>":""}</div></div><div class="targetbox"><div class="label">NEXT TARGET</div><div class="targets">${target}</div></div></div></div>
+ <div class="quick"><div class="q"><div class="ql">LATEST</div><div class="qv">${esc(latest||"—")}</div></div><div class="q"><div class="ql">IRRIGATION</div><div class="qv">${esc(irr||"—")}</div></div></div>
+ <button class="detailsbtn" data-id="${id}">VIEW DETAILS</button>
+ <div id="${id}" class="details"><div class="detailgrid">${box("OW Number",r.OW)}${box("Name",r.Name)}${box("Current Water Level",cur||"NO READING")}${box("Latest Reading",latest)}${box("Reading Type",r["Reading Type"])}${box("Status",st)}${box("Irrigation",irr)}${box("Rotation Schedule",r["Rotation Schedule"])}</div><div class="historytitle">READING HISTORY</div><div class="history">${history(r)}</div><div class="remarks"><div class="rt">REMARKS</div><div class="rv">${esc(r.Remarks||"No remarks")}</div></div></div></article>`;
+}
+function render(){
+ let out=records.filter(r=>{
+  let done=completed(r.Remarks);
+  if(filter==="COMPLETED"? !done:done)return false;
+  if(filter!=="ALL"&&filter!=="IRRIGATION"&&filter!=="COMPLETED"&&clean(r["Monitoring Category"])!==filter)return false;
+  if(filter==="IRRIGATION"&&!clean(r["Irrigation Status"]))return false;
+  if(search&&!([r.OW,r.Name,r.Status,r["Current Water Level"],r["Irrigation Status"],r.Remarks].map(v=>clean(v).toLowerCase()).join(" ").includes(search)))return false;
+  return true;
+ });
+ $("count").textContent=out.length+" record"+(out.length===1?"":"s");
+ $("records").innerHTML=out.length?out.map(card).join(""):'<div class="empty">📋<b>No records found</b>Walang record para sa current filter/search.</div>';
+ document.querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>{let d=$(b.dataset.id),o=d.classList.toggle("open");b.textContent=o?"HIDE DETAILS":"VIEW DETAILS"});
+ let done=records.filter(r=>completed(r.Remarks)).length;
+ $("total").textContent=records.length;$("monitoring").textContent=records.length-done;$("completed").textContent=done;$("targetCount").textContent=records.filter(r=>clean(r["Monitoring Category"])==="TARGET_1620").length;
+}
+function loadCache(){try{let x=JSON.parse(localStorage.getItem(CACHE_KEY)||"null");if(x&&Array.isArray(x.records)){records=x.records;if(x.time)$("time").textContent=new Date(x.time).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});render()}}catch(e){}}
+function sync(){
+ if(!navigator.onLine){connection(false,"OFFLINE • SAVED DATA");return}
+ if(!WEB_APP_URL||WEB_APP_URL.includes("PASTE_YOUR")){connection(false,"ADD WEB APP URL");return}
+ connection(true,"ONLINE • SYNCING...");
+ let cb="OWCB"+Date.now(),s=document.createElement("script"),done=false;
+ let timer=setTimeout(()=>{if(done)return;done=true;cleanup();connection(false,"SYNC FAILED • SAVED DATA");render()},15000);
+ function cleanup(){clearTimeout(timer);try{delete window[cb]}catch(e){}s.remove()}
+ window[cb]=data=>{if(done)return;done=true;cleanup();if(!data||data.success!==true||!Array.isArray(data.records)){connection(false,"SERVER ERROR • SAVED DATA");render();return}records=data.records;localStorage.setItem(CACHE_KEY,JSON.stringify({records,time:Date.now()}));connection(true,"ONLINE • DATA UPDATED");$("time").textContent=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});render()};
+ s.onerror=()=>{if(done)return;done=true;cleanup();connection(false,"CONNECTION ERROR • SAVED DATA");render()};
+ s.src=WEB_APP_URL+(WEB_APP_URL.includes("?")?"&":"?")+"callback="+encodeURIComponent(cb)+"&t="+Date.now();document.body.appendChild(s);
+}
+$("company").textContent=COMPANY_NAME;
+$("refresh").onclick=sync;
+$("search").oninput=e=>{search=e.target.value.trim().toLowerCase();render()};
+document.querySelectorAll(".filter").forEach(b=>b.onclick=()=>{document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");filter=b.dataset.f;render()});
+window.addEventListener("online",sync);window.addEventListener("offline",()=>{connection(false,"OFFLINE • SAVED DATA");render()});
+loadCache();connection(navigator.onLine,navigator.onLine?"ONLINE":"OFFLINE • SAVED DATA");if(navigator.onLine)sync();setInterval(()=>{if(navigator.onLine)sync()},REFRESH_MS);
+if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(console.log));
+</script>
+</body>
+</html>

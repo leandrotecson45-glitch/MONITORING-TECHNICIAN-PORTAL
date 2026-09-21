@@ -1,0 +1,9 @@
+{
+  "name":"OW Monitoring Portal",
+  "short_name":"OW Monitor",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#f4f8fb",
+  "theme_color":"#1261a0",
+  "orientation":"portrait"
+}
